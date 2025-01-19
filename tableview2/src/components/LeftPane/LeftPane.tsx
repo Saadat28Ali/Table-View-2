@@ -66,7 +66,7 @@ function applyQuery(
             });
     });
 
-    tableData.forEach((column: Array<string>, columnIndex: number) => {
+    tableData.forEach((column: Array<string> ) => {
 
         if ((currentQuery[column[0]]).status) {
             // current column is turned on in the query
