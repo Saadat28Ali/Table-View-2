@@ -19,8 +19,9 @@ import LoadingStatusContextProvider from './contexts/loadingStatus/LoadingStatus
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LoadingStatusContextProvider children={
+    {/* <LoadingStatusContextProvider children={
       [<App />]
-    } />
+    } /> */}
+    <App />
   </StrictMode>,
 )
