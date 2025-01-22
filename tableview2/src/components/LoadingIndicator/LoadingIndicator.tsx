@@ -34,8 +34,6 @@ function LoadingIndicator(
         }
     }, [rotation]);
 
-    console.log("loading indicator reload");
-
     return(
         <div
         className="LoadingIndicator"

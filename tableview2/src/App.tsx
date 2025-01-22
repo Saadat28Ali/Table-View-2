@@ -14,24 +14,39 @@ import LeftPane from "./components/LeftPane/LeftPane";
 
 // ----------------------------------------------
 
+// function getDummyData() {
+//   // Generate dummy data
+//   const numColumns = 30; // Number of columns
+//   const numRows = 50;    // Number of rows
+
+//   // Function to generate a random string
+//   const getRandomString = (length = 5) => {
+//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//     return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+//   };
+
+//   // Create the table data
+//   const tableData = Array.from({ length: numRows }, (_, rowIndex) => 
+//     Array.from({ length: numColumns }, (_, colIndex) => `Row${rowIndex + 1}-Col${colIndex + 1}: ${getRandomString()}`)
+//   );
+
+//   // Log the data for verification
+//   return tableData;
+// }
+
 function getDummyData() {
-  // Generate dummy data
-  const numColumns = 30; // Number of columns
-  const numRows = 50;    // Number of rows
-
-  // Function to generate a random string
-  const getRandomString = (length = 5) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
-  };
-
-  // Create the table data
-  const tableData = Array.from({ length: numRows }, (_, rowIndex) => 
-    Array.from({ length: numColumns }, (_, colIndex) => `Row${rowIndex + 1}-Col${colIndex + 1}: ${getRandomString()}`)
-  );
-
-  // Log the data for verification
-  return tableData;
+  return [
+    ["Name", "Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Hank", "Ivy", "Jack"], // Column 1
+    ["Age", "25", "30", "28", "35", "22", "40", "29", "33", "26", "31"],                         // Column 2
+    ["Profession", "Engineer", "Designer", "Developer", "Manager", "Intern", "Director", "Consultant", "Analyst", "HR", "Accountant"], // Column 3
+    ["Location", "New York", "Los Angeles", "Chicago", "San Francisco", "Seattle", "Austin", "Denver", "Boston", "Miami", "Dallas"],  // Column 4
+    ["IsActive", "true", "false", "true", "false", "true", "true", "false", "true", "false", "true"], // Column 5
+    ["BloodType", "A+", "B", "O-", "AB+", "A", "B-", "O+", "A-", "AB-", "O+"],                      // Column 6
+    ["Salary", "50000", "60000", "70000", "90000", "30000", "150000", "80000", "65000", "55000", "72000"], // Column 7
+    ["JoinDate", "2023-01-15", "2022-07-10", "2021-11-05", "2020-03-12", "2023-06-01", "2019-12-25", "2021-04-18", "2022-09-09", "2023-02-20", "2021-07-13"], // Column 8
+    ["Position", "Team Lead", "Senior Designer", "Software Engineer", "Project Manager", "Intern", "Director", "Consultant", "Business Analyst", "HR Specialist", "Financial Analyst"], // Column 9
+    ["FavoriteColor", "Blue", "Green", "Red", "Yellow", "Pink", "Black", "Orange", "Purple", "Teal", "Brown"] // Column 10
+  ];
 }
 
 function App() {
@@ -98,6 +113,7 @@ function App() {
 
           <LeftPane 
           tableData={tableData} 
+          queriedTableData={queriedTableData}
           setQueriedTableData={setQueriedTableData}
           />
 

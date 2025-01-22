@@ -68,7 +68,7 @@ function QueryCard(
                         }}
                         setColumnValue={(newValue: string) => {
                             // data[column].value = newValue;
-                            console.log(newValue);
+                            // console.log(newValue);
                             setValue(column, newValue);
                         }}
                         />

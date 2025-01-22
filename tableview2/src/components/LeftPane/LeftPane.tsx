@@ -11,9 +11,16 @@ import LoadingStatusContext from "../../contexts/loadingStatus/LoadingStatusCont
 // INTERFACES
 import { loadingStatusContextInter } from "../../contexts/loadingStatus/LoadingStatusContext";
 
+// SCRIPTS
+// import { sortByColumn } from "../../scripts/tableDataManip";
+import { convertToRowFirst, convertToColumnFirst } from "../../scripts/tableDataManip";
+
 // COMPONENTS
 import QueryCard from "../QueryCard/QueryCard";
 import HollowButton from "../HollowButton/HollowButton";
+// import Dropdown from "../Dropdown/Dropdown";
+// import Column from "../Column/Column";
+import Dropdown from "../Dropdown/Dropdown";
 
 // ----------------------------------------------
 
@@ -26,24 +33,24 @@ enum selectAllEnum {
 interface queryInter {
     [keys: string]: {
         status: boolean, 
-        value: string
+        value: string, 
     }
 }
 
-function applyQuery(
+function applyFilter(
     currentQuery: queryInter, 
     tableData: Array<Array<string>>, 
-    setQueriedTableData: Function, 
     setLoadingStatus: Function, 
     setLoadingMessage: Function, 
+
 ) {
 
     // console.log("Current query: ", currentQuery);
 
     setLoadingStatus(true);
-    setLoadingMessage("Applying query...");
+    setLoadingMessage("Filtering data...");
 
-    let newQueriedTableData: Array<Array<string>> = [];
+    let newFilteredTableData: Array<Array<string>> = [];
     let removedRowIndices: Array<number> = [];
 
     tableData.forEach((column: Array<string>) => {
@@ -79,17 +86,92 @@ function applyQuery(
                     newColumn.push(cell);
                 }
             });
-            newQueriedTableData.push(newColumn);
+            newFilteredTableData.push(newColumn);
         
         }
     })
 
-    // console.log("new queried table data: ", newQueriedTableData);
+    setLoadingStatus(false);
+    setLoadingMessage("Idle");
+    return newFilteredTableData;
+}
 
-    setQueriedTableData(newQueriedTableData);
+function applySort(
+    currentQuery: queryInter, 
+    tableData: Array<Array<string>>, 
+    setLoadingStatus: Function, 
+    setLoadingMessage: Function, 
+    selectedSort: string, 
+) {
+
+    setLoadingStatus(true);
+    setLoadingMessage("Sorting data...");
+
+    let sortByColumn: string = "";
+    Object.keys(currentQuery).forEach((column: string) => {
+        if (currentQuery[column].status && column === selectedSort) {
+            sortByColumn = column;
+            return;
+        }
+    });
+
+    if (sortByColumn === "") {
+        // console.log("No sort");
+        setLoadingStatus(false);
+        setLoadingMessage("Idle");
+        return tableData;
+    };
+
+    let sortedSortByColumn: Array<string> = [];
+    
+    let headerRow: Array<string> = [];
+    tableData.forEach((column: Array<string>) => {
+        headerRow.push(column[0]);
+    });
+
+    let sortByColumnIndex: number = 0;
+
+    tableData.forEach((column: Array<string>, columnIndex: number) => {
+        if (column[0] === selectedSort) {
+            sortByColumnIndex = columnIndex;
+
+
+            column.forEach((cell: string) => {
+                if (cell !== selectedSort) {
+                    sortedSortByColumn.push(cell);
+                }
+            })
+
+            sortedSortByColumn = sortedSortByColumn.sort();
+            return;
+        }
+    });
+
+    // sortedSortByColumn = sortedSortByColumn.slice(1, );
+    // console.log(sortedSortByColumn);
+
+    let rowFirstTableData: Array<Array<string>> = convertToRowFirst(tableData);
+
+    let sortedRowFirstTableData: Array<Array<string>> = [headerRow];
+
+    sortedSortByColumn.forEach((column: string) => {
+        // console.log(column);
+
+        rowFirstTableData.forEach((row: Array<string>) => {
+
+            if (row[sortByColumnIndex] === column) {
+                sortedRowFirstTableData.push(row);
+            }
+        })
+    });
+
+    // console.log(sortedRowFirstTableData);
+    // console.log(rowFirstTableData);
 
     setLoadingStatus(false);
     setLoadingMessage("Idle");
+
+    return convertToColumnFirst(sortedRowFirstTableData);
 }
 
 function LeftPane(
@@ -99,6 +181,7 @@ function LeftPane(
     }:
     {
         tableData: Array<Array<string>>, 
+        queriedTableData: Array<Array<string>>, 
         setQueriedTableData: Function, 
     }
 ) {
@@ -112,21 +195,53 @@ function LeftPane(
         tableData.forEach((column: Array<string>) => {
             defaultQuery[column[0]] = {
                 status: true, 
-                value: "*"
+                value: "*", 
             }
         });
+
+        // console.log(defaultQuery);
+
         return defaultQuery;
     }
     const [currentQuery, setCurrentQuery] = useState<queryInter>(getDefaultQuery());
 
+    const [selectedSort, setSelectedSort] = useState<string>(tableData[0][0]);
+
+    // useEffect(() => {
+
+    //     console.log(currentQuery);
+
+    //     const sortedTableData: Array<Array<string>> = applySort(
+    //         currentQuery, 
+    //         queriedTableData, 
+    //         loadingStatus.setLoading, 
+    //         loadingStatus.setMessage,
+    //         selectedSort,          
+    //     );
+    //     setQueriedTableData(sortedTableData);
+
+    // }, [selectedSort, currentQuery]);
+
     useEffect(() => {
-        applyQuery(
+        let queriedTableData: Array<Array<string>> = applyFilter(
             currentQuery, 
             tableData, 
-            setQueriedTableData, 
             loadingStatus.setLoading, 
             loadingStatus.setMessage
-        )}, [currentQuery]);
+        )
+        
+        queriedTableData = applySort(
+            currentQuery, 
+            queriedTableData, 
+            loadingStatus.setLoading, 
+            loadingStatus.setMessage, 
+            selectedSort
+        );
+
+        setQueriedTableData(queriedTableData);
+    
+    }, [selectedSort, currentQuery]);
+
 
     useEffect(() => {
         let allTrue: boolean = true;
@@ -141,7 +256,18 @@ function LeftPane(
         if (allTrue) setSelectAll(selectAllEnum.all);
         else if (allFalse) setSelectAll(selectAllEnum.none);
         else setSelectAll(selectAllEnum.some);
-    });
+    }, []);
+
+    const [sortArray, setSortArray] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        let columns: Array<string> = [];
+        tableData.forEach((column: Array<string>) => {
+            columns.push(column[0]);
+        });
+        setSortArray(columns);
+    }, [tableData])
+
 
     return(
         <div
@@ -214,6 +340,12 @@ function LeftPane(
                         }
                     }
                 } />
+
+                <Dropdown 
+                items={sortArray} 
+                selectedItem={selectedSort} 
+                setSelectedItem={setSelectedSort} 
+                />
             </div>
             
             <div className="Mid" style={{
@@ -244,7 +376,8 @@ function LeftPane(
                         newCurrentQuery[column].value = newValue;
                         return newCurrentQuery;
                     })
-                }} />
+                }} 
+                />
             </div>
 
             <div

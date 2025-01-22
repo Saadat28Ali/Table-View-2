@@ -45,7 +45,8 @@ function QuerySelectionProjectionPair(
                 minHeight: "1.5em", 
                 height: "1.5em",
             }}
-            /> 
+            />
+
 
             <div
             style={{
@@ -62,8 +63,11 @@ function QuerySelectionProjectionPair(
                     borderRadius: "0.2em", 
                     border: "2px solid rgba(0,0,0,0.1)", 
 
-                    fontSize: "1.5em",
+                    fontSize: "1em",
                     fontWeight: "bold",
+
+                    overflow: "auto", 
+                    textWrap: "pretty", 
                 }}
                 >
                     {column}
@@ -106,7 +110,7 @@ function QuerySelectionProjectionPair(
                 defaultValue={value}
                 onChange={(event: any) => {
                     // event.preventDefault();
-                    console.log("event target value", event.target.value);
+                    // console.log("event target value", event.target.value);
                     setColumnValue(event.target.value);
                 }}
                 style={{

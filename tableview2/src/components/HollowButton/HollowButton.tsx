@@ -36,6 +36,7 @@ function HollowButton(
                 border: "2px solid rgb(0, 128, 255)", 
                 borderRadius: "1em", 
                 padding: "1em", 
+                marginBottom: "1em", 
                 width: "100%", 
                 minWidth: "100%", 
 
