@@ -22,8 +22,6 @@ function Dropdown(
 ) {
 
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [hover, setHover] = useState<boolean>(false);
-    const [click, setClick] = useState<boolean>(false);
 
     return(
         <div
@@ -102,7 +100,7 @@ function Dropdown(
                 }}
                 >
                     {
-                        items.map((item: string, itemIndex: number) => {
+                        items.map((item: string) => {
                             return (
                                 <DropdownItem text={item} setValue={(newValue: string) => {
                                     setSelectedItem(newValue);
