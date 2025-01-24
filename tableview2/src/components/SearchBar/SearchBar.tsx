@@ -29,19 +29,19 @@ function SearchBar(
     {
         suggestionList, 
         placeholder, 
-        searchedFilter, 
+        // searchedFilter, 
         setSearchedFilter, 
     }:
     {
         suggestionList: Array<string>, 
         placeholder: string, 
-        searchedFilter: string, 
+        // searchedFilter: string, 
         setSearchedFilter: Function
     }
 ) {
 
-    const [hover, setHover] = useState<boolean>();
-    const [click, setClick] = useState<boolean>();
+    const [_, setHover] = useState<boolean>();
+    const [__, setClick] = useState<boolean>();
     const [focus, setFocus] = useState<boolean>();
 
     const [suggestions, setSuggestions] = useState<Array<string>>([]);

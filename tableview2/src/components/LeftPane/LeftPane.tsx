@@ -21,7 +21,7 @@ import HollowButton from "../HollowButton/HollowButton";
 // import Dropdown from "../Dropdown/Dropdown";
 // import Column from "../Column/Column";
 import Dropdown from "../Dropdown/Dropdown";
-import SearchBar from "../SearchBar/SearchBar";
+// import SearchBar from "../SearchBar/SearchBar";
 
 // ----------------------------------------------
 
@@ -175,21 +175,21 @@ function applySort(
     return convertToColumnFirst(sortedRowFirstTableData);
 }
 
-function applyFilterSearch(currentQuery: queryInter, searchedFilter: string) {
-    if (searchedFilter === "") return currentQuery;
+// function applyFilterSearch(currentQuery: queryInter, searchedFilter: string) {
+//     if (searchedFilter === "") return currentQuery;
 
-    let newQuery: queryInter = {};
+//     let newQuery: queryInter = {};
 
-    Object.keys(currentQuery).map((column: string) => {
-        if (searchedFilter.includes(column)) {
-            newQuery[column] = currentQuery[column];
-        }
-    });
+//     Object.keys(currentQuery).map((column: string) => {
+//         if (searchedFilter.includes(column)) {
+//             newQuery[column] = currentQuery[column];
+//         }
+//     });
 
-    // console.log(newQuery);
-    return newQuery;
+//     // console.log(newQuery);
+//     return newQuery;
 
-}
+// }
 
 function LeftPane(
     {
