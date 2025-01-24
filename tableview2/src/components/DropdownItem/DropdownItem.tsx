@@ -7,15 +7,16 @@ import { useState } from "react";
 
 // ----------------------------------------------
 
-
 function DropdownItem(
     {
         text, 
         setValue, 
+        align="center", 
     }:
     {
         text: string, 
-        setValue: Function
+        setValue: Function, 
+        align?: string, 
     }
 ) {
 
@@ -38,19 +39,29 @@ function DropdownItem(
                 minWidth: "100%", 
                 width: "100%", 
                 boxSizing: "border-box", 
+                zIndex: "10", 
     
                 userSelect: "none", 
                 transitionDuration: "25ms", 
             }, 
             ...((click || hover) ? {
-                backgroundColor: "rgba(0,0,0,0.25)", 
+                backgroundColor: "rgb(190, 190, 190)", 
             } : {
                 backgroundColor: "white", 
             })
 
         }}
         >
-            {text}
+            <p
+            style={{
+                width: "100%", 
+
+                textAlign: align as CanvasTextAlign, 
+            }}
+            >
+                {text}
+            </p>
+
         </div>
     );
 }

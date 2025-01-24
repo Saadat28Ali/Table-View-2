@@ -4,7 +4,7 @@
 
 // REACT
 import { useState, } from "react";
-import DropdownItem from "./DropdownItem/DropdownItem";
+import DropdownItem from "../DropdownItem/DropdownItem";
 
 // ----------------------------------------------
 
@@ -32,11 +32,12 @@ function Dropdown(
         style={{
             ...{
                 position: "relative", 
-                border: "2px solid rgba(0,0,0,0.25)", 
+                border: "2px solid rgb(190, 190, 190)", 
                 borderRadius: "1em", 
                 padding: "1em", 
                 width: "100%", 
                 boxSizing: "border-box", 
+                marginBottom: "1em", 
                 
                 transitionDuration: "0ms", 
                 // minWidth: "100%", 
@@ -48,19 +49,19 @@ function Dropdown(
                 borderBottomLeftRadius: "0", 
                 borderBottomRightRadius: "0", 
                 borderBottom: "0px", 
-                borderWidth: "3px", 
                 padding: "1em", 
+                border: "3px solid rgb(0, 128, 255)"
             }: {
                 borderBottomLeftRadius: "1em", 
                 borderBottomRightRadius: "1em", 
-                borderBottom: "2px solid rgba(0,0,0,0.25)", 
+                borderBottom: "2px solid rgb(190, 190, 190)", 
                 padding: "1em", 
                 borderWidth: "2px", 
             })
 
         }}
         >
-            {selectedItem} {(!expanded) ? <>&#x2BC6;</> : <>&#x2BC5;</>}
+            Sort by: {selectedItem} {(!expanded) ? <>&#x2BC6;</> : <>&#x2BC5;</>}
 
             {
                 (expanded) ? 
@@ -74,8 +75,9 @@ function Dropdown(
                         width: "100%", 
                         maxHeight: "10em", 
                         // boxSizing: "border-box", 
-                        border: "2px solid rgba(0,0,0,0.25)", 
+                        border: "3px solid rgb(0, 128, 255)", 
                         borderRadius: "1em", 
+                        zIndex: "10", 
         
                         backgroundColor: "white", 
                         justifyContent: "start", 
@@ -87,12 +89,12 @@ function Dropdown(
                     ...((expanded) ? {
                         borderTopLeftRadius: "0", 
                         borderTopRightRadius: "0", 
-                        borderTop: "1px solid rgba(0,0,0,0.25)", 
+                        borderTop: "1px solid rgb(190, 190, 190)", 
                         borderWidth: "3px", 
                     } : {
                         borderTopLeftRadius: "1em", 
                         borderTopRightRadius: "1em", 
-                        borderTop: "2px solid rgba(0,0,0,0.25)", 
+                        borderTop: "2px solid rgb(190, 190, 190)", 
                         borderWidth: "2px", 
                     })
     

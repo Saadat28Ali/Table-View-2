@@ -38,7 +38,7 @@ function HollowButton(
                 padding: "1em", 
                 marginBottom: "1em", 
                 width: "100%", 
-                minWidth: "100%", 
+                // minWidth: "100%", 
 
                 display: "flex", 
                 justifyContent: "center", 

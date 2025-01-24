@@ -21,6 +21,7 @@ import HollowButton from "../HollowButton/HollowButton";
 // import Dropdown from "../Dropdown/Dropdown";
 // import Column from "../Column/Column";
 import Dropdown from "../Dropdown/Dropdown";
+import SearchBar from "../SearchBar/SearchBar";
 
 // ----------------------------------------------
 
@@ -174,6 +175,22 @@ function applySort(
     return convertToColumnFirst(sortedRowFirstTableData);
 }
 
+function applyFilterSearch(currentQuery: queryInter, searchedFilter: string) {
+    if (searchedFilter === "") return currentQuery;
+
+    let newQuery: queryInter = {};
+
+    Object.keys(currentQuery).map((column: string) => {
+        if (searchedFilter.includes(column)) {
+            newQuery[column] = currentQuery[column];
+        }
+    });
+
+    // console.log(newQuery);
+    return newQuery;
+
+}
+
 function LeftPane(
     {
         tableData, 
@@ -204,23 +221,9 @@ function LeftPane(
         return defaultQuery;
     }
     const [currentQuery, setCurrentQuery] = useState<queryInter>(getDefaultQuery());
+    // const [displayedQuery, setDisplayedQuery] = useState<queryInter>({});
 
     const [selectedSort, setSelectedSort] = useState<string>(tableData[0][0]);
-
-    // useEffect(() => {
-
-    //     console.log(currentQuery);
-
-    //     const sortedTableData: Array<Array<string>> = applySort(
-    //         currentQuery, 
-    //         queriedTableData, 
-    //         loadingStatus.setLoading, 
-    //         loadingStatus.setMessage,
-    //         selectedSort,          
-    //     );
-    //     setQueriedTableData(sortedTableData);
-
-    // }, [selectedSort, currentQuery]);
 
     useEffect(() => {
         let queriedTableData: Array<Array<string>> = applyFilter(
@@ -242,6 +245,16 @@ function LeftPane(
     
     }, [selectedSort, currentQuery]);
 
+    // useEffect(() => {
+    //     if (Object.keys(displayedQuery).length === 0) {
+    //     } else {
+    //         setCurrentQuery((oldCurrentQuery: queryInter) => {
+    //             let newCurrentQuery: queryInter = {...oldCurrentQuery};
+    //             newCurrentQuery[Object.keys(displayedQuery)[0]] = displayedQuery[0];
+    //             return newCurrentQuery;
+    //         });
+    //     }
+    // }, [displayedQuery]);
 
     useEffect(() => {
         let allTrue: boolean = true;
@@ -268,6 +281,13 @@ function LeftPane(
         setSortArray(columns);
     }, [tableData])
 
+    // const [searchedFilter, setSearchedFilter] = useState<string>("");
+    // useEffect(() => {
+    //     setDisplayedQuery((oldDisplayedQuery: queryInter) => {
+    //         let newDisplayedQuery: queryInter = {searchedFilter: {...oldDisplayedQuery[searchedFilter]}};
+    //         return newDisplayedQuery;
+    //     });
+    // }, [searchedFilter])
 
     return(
         <div
@@ -317,6 +337,18 @@ function LeftPane(
                     Data Query
                 </h2>
 
+                <div
+                style={{
+                    width: "100%", 
+                    minWidth: "100%", 
+                    // padding: "1em", 
+                    boxSizing: "border-box", 
+                    
+                    flexDirection: "row", 
+                    gap: "1em", 
+
+                }}
+                >
                 <HollowButton text={
                     (selectAll === selectAllEnum.all) ? "Select None" : "Select All"
                 } callback={
@@ -346,6 +378,22 @@ function LeftPane(
                 selectedItem={selectedSort} 
                 setSelectedItem={setSelectedSort} 
                 />
+                </div>
+                
+
+                {/* <div
+                style={{
+                    width: "100%", 
+                    minWidth: "100%", 
+                    zIndex: "20", 
+                }}
+                >
+                <Dropdown 
+                items={sortArray} 
+                selectedItem={selectedSort} 
+                setSelectedItem={setSelectedSort} 
+                />
+                </div> */}
             </div>
             
             <div className="Mid" style={{
@@ -359,6 +407,13 @@ function LeftPane(
 
                 overflowY: "scroll", 
             }}>
+                {/* <SearchBar 
+                suggestionList={Object.keys(currentQuery)} 
+                placeholder="Search for filter..." 
+                searchedFilter={searchedFilter}
+                setSearchedFilter={setSearchedFilter}/> */}
+
+
                 <QueryCard 
                 data={currentQuery} 
                 setStatus={
@@ -366,6 +421,8 @@ function LeftPane(
                         setCurrentQuery((currentQuery: queryInter) => {
                             let newCurrentQuery: queryInter = {...currentQuery};
                             newCurrentQuery[column].status = newStatus;
+                            // console.log(newCurrentQuery);
+                            // console.log(applyFilterSearch(newCurrentQuery, searchedFilter));
                             return newCurrentQuery;
                         });
                     }}
@@ -374,6 +431,8 @@ function LeftPane(
                         // console.log("new current query value: ", newValue);
                         let newCurrentQuery: queryInter = {...currentQuery};
                         newCurrentQuery[column].value = newValue;
+                        // console.log(newCurrentQuery);
+                        // console.log(applyFilterSearch(newCurrentQuery, searchedFilter));
                         return newCurrentQuery;
                     })
                 }} 
